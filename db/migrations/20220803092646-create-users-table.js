@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, DataTypes) {
-     await queryInterface.createTable('Users', { 
+    await queryInterface.createTable('Users', { 
       id: { 
         primaryKey: true, 
         autoIncrement: true, 
@@ -57,10 +57,10 @@ module.exports = {
           type: DataTypes.DATE, 
           defaultValue: DataTypes.NOW 
       } 
-    }); 
+    });
   },
 
   async down (queryInterface, Sequelize) {
-      await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('users');
   }
 };

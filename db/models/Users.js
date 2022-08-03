@@ -41,11 +41,11 @@ const userModel = {
     }, 
     website:{ 
       type: DataTypes.STRING, 
-      allowNull: false, 
+      allowNull: true, 
     }, 
     username:{ 
       type: DataTypes.STRING, 
-      allowNull: false, 
+      allowNull: true, 
     }, 
     createdAt: { 
       type: DataTypes.DATE, 
