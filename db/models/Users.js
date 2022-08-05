@@ -32,7 +32,7 @@ const userModel = {
       allowNull: true, 
     }, 
     birthdate: { 
-      type: DataTypes.DATE, 
+      type: DataTypes.DATEONLY, 
       allowNull: true, 
     }, 
     phone:{ 

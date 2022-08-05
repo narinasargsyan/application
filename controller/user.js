@@ -4,26 +4,31 @@ const secret = 'shhhh';
 const fs = require('fs'); 
 const models = require('../db/models'); 
 const fetch = require('node-fetch'); 
+const { validationResult } = require('express-validator');
+
  
- 
-class UserController { 
+class UserController {        
  
    register = async(req,res) =>  { 
       try { 
-         const {name,surname,email,password,birthdate,phone} = req.body; 
+      
+         const { name, surname,email,password,birthdate,phone,website,username } = req.body; 
          const salt = await bcrypt.genSalt(10); 
  
          const hashedPassword = await bcrypt.hash(password, salt); 
             await models.Users.create({  
-               name:name, 
-               surname:surname, 
-               email:email, 
-               password:hashedPassword, 
-               birthdate:birthdate, 
-               phone:phone 
+               name, 
+               surname, 
+               email, 
+               password: hashedPassword, 
+               birthdate, 
+               phone,
+               website,
+               username
             }) 
             res.send("you have successfully registered!"); 
       } catch (err) { 
+         res.status(400).send('Something went wrong')
             console.log('error=>', err); 
       } 
    } 
@@ -80,21 +85,16 @@ class UserController {
  
    update =async(req,res) => {    
      try{ 
-         const { name } = req.body; 
          const user = await models.Users.findByPk(req.verifedUser.id); 
-          
+         const { id } = req.verifedUser;
+
          if (user){ 
-            await models.Users.update({name:name},{ 
-               where:{ 
-                  id:req.verifedUser.id 
-               } 
-            }) 
+            await models.Users.update(req.body,{ where:{ id } }) 
             res.status(200).send("Update is done"); 
          } 
          else{ 
             res.status(404); 
          } 
- 
      } 
      catch(err){ 
          console.log('error=>', err); 
@@ -103,7 +103,7 @@ class UserController {
   }  
  
  
-   getUsers = async(req,res) =>{   
+   getUsers = async(req, res) =>{   
       try{ 
          const users = await models.Users.findAll({ 
             include:[ 
